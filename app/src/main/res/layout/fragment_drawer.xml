@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_drawer"
+    tools:context="cl.bastian.flashome.views.main.drawer.DrawerFragment">
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/userAvatar"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp"
+        android:src="@mipmap/logo"
+        app:siBorderColor="@color/colorWhite"
+        app:siBorderWidth="2dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="User Email"
+        android:id="@+id/userNick"
+        android:layout_below="@+id/userAvatar"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorWhite"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/colorWhite"
+        android:layout_below="@+id/userNick"/>
+
+    <TextView
+        android:id="@+id/logoutTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cerrar sesion"
+        android:textColor="@color/colorWhite"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:padding="8dp"/>
+
+</RelativeLayout>

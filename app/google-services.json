@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "408521565113",
+    "firebase_url": "https://flashome-6a9ab.firebaseio.com",
+    "project_id": "flashome-6a9ab",
+    "storage_bucket": "flashome-6a9ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:408521565113:android:dd7fed8d4b29b4d8",
+        "android_client_info": {
+          "package_name": "cl.bastian.flashome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "408521565113-jldsk3tsb80a2u8pgk7j17d1ttorpjia.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cl.bastian.flashome",
+            "certificate_hash": "CA0F1A5BBC2954499A6C3BAE6D8284A9AE4E5018"
+          }
+        },
+        {
+          "client_id": "408521565113-0jm2ub92po3ai1c2v5qts7bvdjfaj4ld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmi3_lPaQTp9s22ZhIXeYoDBup243jI6Q"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "408521565113-0jm2ub92po3ai1c2v5qts7bvdjfaj4ld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
