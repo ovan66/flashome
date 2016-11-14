@@ -3,8 +3,16 @@ package cl.bastian.flashome.views.login;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cl.bastian.flashome.R;
 import cl.bastian.flashome.views.main.MainActivity;
@@ -25,8 +33,22 @@ public class FullscreenActivity extends AppCompatActivity implements LoginCallba
     @Override
     public void loged() {
 
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+       /* Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);*/
+
+        FirebaseDatabase.getInstance().getReference().child("testing").setValue("hello");
+        FirebaseDatabase.getInstance().getReference().child("testing").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(FullscreenActivity.this, dataSnapshot.getValue(String.class), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     @Override
