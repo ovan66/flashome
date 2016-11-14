@@ -31,6 +31,7 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -76,6 +77,9 @@ public class DrawerFragment extends Fragment {
         if (photoData.getUrl() == null) {
             selfie();
         } else {
+            Picasso.with(getContext()).load(photoData.getUrl()).into(avatarView);
+            TextView nickTv = (TextView) view.findViewById(R.id.userNick);
+            nickTv.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         }
 
@@ -122,7 +126,7 @@ public class DrawerFragment extends Fragment {
             String name = "flash_avatar_" + System.currentTimeMillis();
             magicalCamera.savePhotoInMemoryDevice(magicalCamera.getMyPhoto(),name,"flashMain", MagicalCamera.JPEG, false);
             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-            String photoServer = FirebaseAuth.getInstance().getCurrentUser().getEmail().replace("@", "_at_").replace(".", "_dot_");
+            final String photoServer = FirebaseAuth.getInstance().getCurrentUser().getEmail().replace("@", "_at_").replace(".", "_dot_") + ".jpeg";
             String refUrl = "gs://flashome-6a9ab.appspot.com/avatars/"+photoServer;
             StorageReference storageReference = firebaseStorage.getReferenceFromUrl(refUrl);
             File file = new File ("/storage/emulated/0/Pictures/flashMain/"+name+".jpeg");
@@ -130,7 +134,9 @@ public class DrawerFragment extends Fragment {
             storageReference.putFile(Uri.fromFile(file)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getContext(), "PHOTO", Toast.LENGTH_SHORT).show();
+                    String url = "https://firebasestorage.googleapis.com/v0/b/flashome-6a9ab.appspot.com/o/avatars%2F"+ photoServer +"?alt=media";
+                    new PhotoData(getContext()).saveUrl(url);
+
 
                 }
             });

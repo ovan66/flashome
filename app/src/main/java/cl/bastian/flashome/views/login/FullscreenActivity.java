@@ -34,19 +34,6 @@ public class FullscreenActivity extends AppCompatActivity implements LoginCallba
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
 
-        /*FirebaseDatabase.getInstance().getReference().child("testing").setValue("hello");
-        FirebaseDatabase.getInstance().getReference().child("testing").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Toast.makeText(FullscreenActivity.this, dataSnapshot.getValue(String.class), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
-
     }
 
     @Override
