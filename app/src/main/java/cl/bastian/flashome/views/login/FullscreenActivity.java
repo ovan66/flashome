@@ -26,17 +26,15 @@ public class FullscreenActivity extends AppCompatActivity implements LoginCallba
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
         new LoginValidation(this).init();
-
-
     }
 
     @Override
     public void loged() {
+        Toast.makeText(this, "LOGED", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
 
-       /* Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);*/
-
-        FirebaseDatabase.getInstance().getReference().child("testing").setValue("hello");
+        /*FirebaseDatabase.getInstance().getReference().child("testing").setValue("hello");
         FirebaseDatabase.getInstance().getReference().child("testing").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -47,7 +45,7 @@ public class FullscreenActivity extends AppCompatActivity implements LoginCallba
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
     }
 

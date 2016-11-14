@@ -125,7 +125,8 @@ public class DrawerFragment extends Fragment {
             String photoServer = FirebaseAuth.getInstance().getCurrentUser().getEmail().replace("@", "_at_").replace(".", "_dot_");
             String refUrl = "gs://flashome-6a9ab.appspot.com/avatars/"+photoServer;
             StorageReference storageReference = firebaseStorage.getReferenceFromUrl(refUrl);
-            File file = new File ("/storage/emulated/0/Pictures/flash/"+name+".jpeg");
+            File file = new File ("/storage/emulated/0/Pictures/flashMain/"+name+".jpeg");
+
             storageReference.putFile(Uri.fromFile(file)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
