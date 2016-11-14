@@ -3,31 +3,24 @@ package cl.bastian.flashome.views.main.drawer;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.os.EnvironmentCompat;
 import android.support.v7.app.AlertDialog;
-import android.telephony.SignalStrength;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.util.FirebaseAuthWrapper;
 import com.frosquivel.magicalcamera.MagicalCamera;
 import com.github.siyamed.shapeimageview.CircularImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -36,12 +29,13 @@ import com.squareup.picasso.Picasso;
 import java.io.File;
 
 import cl.bastian.flashome.R;
+import cl.bastian.flashome.data.UserData;
 import cl.bastian.flashome.views.login.FullscreenActivity;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DrawerFragment extends Fragment {
+public class DrawerFragment extends Fragment implements PhotoValidationCallback {
 
     private MagicalCamera magicalCamera;
     private CircularImageView avatarView;
@@ -73,15 +67,11 @@ public class DrawerFragment extends Fragment {
         });
 
         avatarView = (CircularImageView) view.findViewById(R.id.userAvatar);
-        PhotoData photoData = new PhotoData(getContext());
-        if (photoData.getUrl() == null) {
-            selfie();
-        } else {
-            Picasso.with(getContext()).load(photoData.getUrl()).into(avatarView);
-            TextView nickTv = (TextView) view.findViewById(R.id.userNick);
-            nickTv.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
-        }
+        new PhotoValidation(getContext(),this).init();
+
+        TextView nickTv = (TextView) view.findViewById(R.id.userNick);
+        nickTv.setText(new UserData().email());
 
     }
 
@@ -91,6 +81,7 @@ public class DrawerFragment extends Fragment {
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        new PhotoData(getContext()).saveUrl(null);
                         getActivity().finish();
                         Intent intent = new Intent(getActivity(), FullscreenActivity.class);
                         startActivity(intent);
@@ -98,7 +89,24 @@ public class DrawerFragment extends Fragment {
                 });
     }
 
-    private void selfie() {
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == getActivity().RESULT_OK) {
+            magicalCamera.resultPhoto(requestCode, resultCode, data);
+            Bitmap photo = magicalCamera.getMyPhoto();
+            avatarView.setImageBitmap(photo);
+            new PhotoToServer(getContext()).send(magicalCamera,photo);
+
+        } else {
+            selfie();
+
+        }
+    }
+
+    @Override
+    public void selfie() {
         magicalCamera = new MagicalCamera(getActivity(), 500);
         AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
         dialog.setTitle("tomate una selfie");
@@ -118,33 +126,8 @@ public class DrawerFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == getActivity().RESULT_OK) {
-            magicalCamera.resultPhoto(requestCode, resultCode, data);
-            avatarView.setImageBitmap(magicalCamera.getMyPhoto());
-            String name = "flash_avatar_" + System.currentTimeMillis();
-            magicalCamera.savePhotoInMemoryDevice(magicalCamera.getMyPhoto(),name,"flashMain", MagicalCamera.JPEG, false);
-            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-            final String photoServer = FirebaseAuth.getInstance().getCurrentUser().getEmail().replace("@", "_at_").replace(".", "_dot_") + ".jpeg";
-            String refUrl = "gs://flashome-6a9ab.appspot.com/avatars/"+photoServer;
-            StorageReference storageReference = firebaseStorage.getReferenceFromUrl(refUrl);
-            File file = new File ("/storage/emulated/0/Pictures/flashMain/"+name+".jpeg");
+    public void setPhoto(String url) {
+        Picasso.with(getContext()).load(url).into(avatarView);
 
-            storageReference.putFile(Uri.fromFile(file)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    String url = "https://firebasestorage.googleapis.com/v0/b/flashome-6a9ab.appspot.com/o/avatars%2F"+ photoServer +"?alt=media";
-                    new PhotoData(getContext()).saveUrl(url);
-
-
-                }
-            });
-
-
-        } else {
-            selfie();
-
-        }
     }
 }
