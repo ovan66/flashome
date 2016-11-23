@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/reciverIv"
+        android:layout_width="54dp"
+        android:layout_height="54dp" />
+
+    <TextView
+        android:id="@+id/reciverTv"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <View
+        android:background="@drawable/bg_oval_accent"
+        android:visibility="gone"
+        android:id="@+id/notificationV"
+        android:layout_width="22dp"
+        android:layout_height="2dp"
+        android:layout_gravity="center_vertical" />
+
+</LinearLayout>
